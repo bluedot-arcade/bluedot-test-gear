@@ -17,9 +17,11 @@ The BD845-PWB Tester is a test gear specifically designed to automate the [BD845
 
 It is based on an Arduino Mega (or any compatible board). An additional hat is provided to avoid a flying wires setup and speed up the testing procedure.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## Test procedure
 
-This section describes the steps required to perform the the tests.
+This section describes the steps required to perform the tests.
 
 ### 1. Build and upload test program to the Arduino Mega
 
@@ -51,6 +53,8 @@ The following is the recommended way to build and upload the firmware.
 
 If you prefer using the Arduino IDE the full code is contained in `src/main.cpp`. Just rename it to `main.ino`.
 
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ### 2. Set up test gear
 
 Wire the Arduino Mega to the BD845-PWB. This does not require any additional components other than wires for direct connection of the pins.
@@ -81,7 +85,9 @@ The following is the Arduino Mega <-> BD845-PWB pins mapping table.
 | D28              | D_S3          |-|
 | D29              | D_S4          |-|
 
-The full pinout for the BD845-PWB can be found in the [docs][BD845-PWB Docs].After setting up the test gear, connect the Arduino mega
+The full pinout for the BD845-PWB can be found in the [docs][BD845-PWB Docs].
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### 3. Run test routines
 
@@ -105,17 +111,6 @@ Test routines can be run using a serial monitor from a computer.
 5. "TEST SUCCESSFUL" will be printed on success. Otherwise "TEST FAILED" will be printed and the built-in LED on Arduino Mega will light up.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Project structure
-
-* [/inc/](/inc/) - contains project include files.
-* [/lib/](/lib/) - contains project specific private libraries.
-* [/src/](/src/) - contains project source files.
-* [/test/](/test/) - contains project test files.
-* [/platformio.ini](/platformio.ini) - the PlatformIO project configuration file.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 ## License
 
