@@ -1,5 +1,8 @@
 #include <Arduino.h>
 
+/* Compile options */
+// #define USE_EXTERNAL_PULLUPS
+
 /* Commands */
 
 #define CMD_TEST_INPUTS '1'
@@ -7,6 +10,12 @@
 #define CMD_TEST_LIGHTS_PRESS '3'
 #define CMD_TEST_DEBOUNCE '4'
 #define CMD_TEST_LEGACY '5'
+
+/* States */
+#define STATE_IDLE 0
+#define STATE_TEST_RUNNING 1
+#define STATE_TEST_FAILED 2
+#define STATE_TEST_SUCCESSFUL 3
 
 /* 
  * Map Arduino Mega pins to BD845-PWB pins.
@@ -98,6 +107,12 @@
 #define LIGHT_PIN    PINL
 #define LIGHT_OFFSET 0
 
+/* Hat pins */
+
+#define LED_FAIL    PE4
+#define LED_SUCCESS PE5
+#define LED_RUN     PE6 
+
 void setupSerialPort();
 void setupLeds();
 void setupCommInputPins();
@@ -125,8 +140,7 @@ void setRightPins(uint8_t state);
 void setCenterPins(uint8_t state);
 void setHighZ(int pin);
 void printMenu();
-void setErrored();
-void clearError();
+void setState(uint8_t state);
 
 // Setup ---------------------------------------------------------------
 
@@ -151,6 +165,15 @@ void setupSerialPort() {
 void setupLeds() {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
+  
+  pinMode(LED_FAIL, OUTPUT);
+  digitalWrite(LED_FAIL, LOW);
+
+  pinMode(LED_SUCCESS, OUTPUT);
+  digitalWrite(LED_SUCCESS, LOW);
+
+  pinMode(LED_RUN, OUTPUT);
+  digitalWrite(LED_RUN, LOW);
 }
 
 void setupCommInputPins() {
@@ -163,15 +186,24 @@ void setupCommInputPins() {
 }
 
 void setupCommOutputPins() {
+  #ifdef USE_EXTERNAL_PULLUPS
+  pinMode(C_OUT, INPUT);
+  pinMode(R_OUT, INPUT);
+  pinMode(L_OUT, INPUT);
+  pinMode(D_OUT, INPUT);
+  pinMode(U_OUT, INPUT);
+  #else
   pinMode(C_OUT, INPUT_PULLUP);
   pinMode(R_OUT, INPUT_PULLUP);
   pinMode(L_OUT, INPUT_PULLUP);
   pinMode(D_OUT, INPUT_PULLUP);
   pinMode(U_OUT, INPUT_PULLUP);
+  #endif
 }
 
 void setupUpPins() {
-  setHighZ(U_S1);
+  setHighZ(U_S1);pinMode(LED_FAIL, OUTPUT);
+  digitalWrite(LED_FAIL, LOW);
   setHighZ(U_S2);
   setHighZ(U_S3);
   setHighZ(U_S4);
@@ -222,24 +254,29 @@ void loop() {
   // Wait for command
   while(Serial.available() <= 0);
 
-  clearError();
+  setState(STATE_IDLE);
   char cmd = Serial.read();
   bool successful = true;
  
   switch(cmd) {
     case CMD_TEST_INPUTS:
+      setState(STATE_TEST_RUNNING);
       successful = testInputs();
       break;
     case CMD_TEST_LIGHTS_EXT:
+      setState(STATE_TEST_RUNNING);
       successful = testLightsExt();
       break;
     case CMD_TEST_LIGHTS_PRESS:
+      setState(STATE_TEST_RUNNING);
       successful = testLightsPress();
       break;
     case CMD_TEST_DEBOUNCE:
+      setState(STATE_TEST_RUNNING);
       successful = testDebounce();
       break;
     case CMD_TEST_LEGACY:
+      setState(STATE_TEST_RUNNING);
       successful = testLegacy();
       break;
     default:
@@ -248,10 +285,11 @@ void loop() {
   }
 
   if(successful) {
+    setState(STATE_TEST_SUCCESSFUL);
     Serial.println(F("TEST SUCCESSFUL"));
   } else {
+    setState(STATE_TEST_FAILED);
     Serial.println(F("TEST FAILED"));
-    setErrored();
   }
 }
 
@@ -373,10 +411,31 @@ void printMenu() {
   Serial.println();
 }
 
-void clearError() {
-  digitalWrite(LED_BUILTIN, LOW);
-}
-
-void setErrored() {
-  digitalWrite(LED_BUILTIN, HIGH);
+void setState(uint8_t state) {
+  switch(state) {
+    case STATE_IDLE:
+      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(LED_FAIL, LOW);
+      digitalWrite(LED_SUCCESS, LOW);
+      digitalWrite(LED_RUN, LOW);
+      break;
+    case STATE_TEST_RUNNING:
+      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(LED_FAIL, LOW);
+      digitalWrite(LED_SUCCESS, LOW);
+      digitalWrite(LED_RUN, HIGH);
+      break;
+    case STATE_TEST_FAILED:
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(LED_FAIL, HIGH);
+      digitalWrite(LED_SUCCESS, LOW);
+      digitalWrite(LED_RUN, LOW);
+      break;
+    case STATE_TEST_SUCCESSFUL:
+      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(LED_FAIL, LOW);
+      digitalWrite(LED_SUCCESS, HIGH);
+      digitalWrite(LED_RUN, LOW);
+      break;
+  }
 }
