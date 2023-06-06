@@ -65,17 +65,17 @@ The following is the Arduino Mega <-> BD845-PWB pins mapping table.
 
 | Arduino Mega Pin | BD845-PWB Pin | | Arduino Mega Pin | BD845-PWB Pin |
 | ---------------- | ------------- |-| ---------------- | ------------- |
-| A0               | FL1           |-| D37              | L_S1          |
-| A1               | FL2           |-| D36              | L_S2          |
-| A2               | FL3           |-| D35              | L_S3          |
-| A3               | FL4           |-| D34              | L_S4          |
-| A4               | FL5           |-| D33              | R_S1          |
-| A5               | TEST          |-| D32              | R_S2          |
-| A8               | C_OUT         |-| D31              | R_S3          |
-| A9               | R_OUT         |-| D30              | R_S4          |
-| A10              | L_OUT         |-| D53              | C_S1          |
-| A11              | D_OUT         |-| D52              | C_S2          |
-| A12              | U_OUT         |-| D51              | C_S3          |
+| A0               | U_OUT         |-| D37              | L_S1          |
+| A1               | D_OUT         |-| D36              | L_S2          |
+| A2               | L_OUT         |-| D35              | L_S3          |
+| A3               | R_OUT         |-| D34              | L_S4          |
+| A4               | C_OUT         |-| D33              | R_S1          |
+| A8               | FL1           |-| D32              | R_S2          |
+| A9               | FL2           |-| D31              | R_S3          |
+| A10              | FL3           |-| D30              | R_S4          |
+| A11              | FL4           |-| D53              | C_S1          |
+| A12              | FL5           |-| D52              | C_S2          |
+| A13              | TEST          |-| D51              | C_S3          |
 | D22              | U_S1          |-| D50              | C_S4          |
 | D23              | U_S2          |-| D49              | U_LIGHT       |
 | D24              | U_S3          |-| D48              | D_LIGHT       |
@@ -112,12 +112,19 @@ Test routines can be run using a serial monitor from a computer.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Hat board
+
+The [/hat](hat/) folder contains the project files for an hat board that simplifies the connection between the Arduino Mega and the BD845-PWB board, speeding up testing without the use of stray wires.
+
+It also comes with additional LED indicators for test status and light driver tests.
+
+![BD845-PWB-Tester-Hat](/bd845-pwb-tester/hat/images/bd845-pwb-tester-hat-v1.0.0.png)
+
 ## License
 
 Distributed under the MIT License. See [LICENSE.txt] for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 [LICENSE.txt]: /LICENSE.txt
 [PlatformIO Core Docs]: https://dohttps://docs.bluedotarcade.com/boards/bd845-pwbcs.platformio.org/en/latest/core/index.html
