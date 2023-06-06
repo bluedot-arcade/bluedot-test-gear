@@ -16,25 +16,25 @@
 
 /* Comm inputs */
 
-#define FL1       PF0
-#define FL2       PF1
-#define FL3       PF2
-#define FL4       PF3
-#define FL5       PF4
-#define TEST      PF5
-#define IN_DDR    DDRF
-#define IN_PORT   PORTF
+#define FL1       PK0
+#define FL2       PK1
+#define FL3       PK2
+#define FL4       PK3
+#define FL5       PK4
+#define TEST      PK5
+#define IN_DDR    DDRK
+#define IN_PORT   PORTK
 #define IN_OFFSET 0
 
 /* Comm outputs */
 
-#define C_OUT      PK0 
-#define R_OUT      PK1 
-#define L_OUT      PK2 
-#define D_OUT      PK3 
-#define U_OUT      PK4 
-#define OUT_DDR    DDRK
-#define OUT_PIN    PINK
+#define U_OUT      PF0 
+#define D_OUT      PF1 
+#define L_OUT      PF2 
+#define R_OUT      PF3 
+#define C_OUT      PF4 
+#define OUT_DDR    DDRF
+#define OUT_PIN    PINF
 #define OUT_OFFSET 0
 
 /* Panel up sensors */
